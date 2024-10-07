@@ -7,11 +7,12 @@ editor: visual
 
 ## Load Required Packages
 
-```{r}
-library(tidyverse)
+```{r message=FALSE, warning=FALSE}
 library(conflicted)
+library(tidyverse)
 conflicts_prefer(dplyr::filter())
 ```
+
 ## Task 1: Read in Data and Modify
 
 ### Merge Version
@@ -25,9 +26,10 @@ d2 <- read.table("student-por.csv",sep=";",header=TRUE)
 d3 <- merge(d1,d2,by=c("school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"))
 print(nrow(d3)) # 382 students
 ```
+
 ### Inner Join Version 1
 
-Second, read in and combine the data using functions from the tidyverse. Use an inner_join() on the variables they used in their code. Make a note of any  issues.
+Second, read in and combine the data using functions from the tidyverse. Use an `inner_join()` on the variables used in the UCI code. Make a note of any issues.
 
 ```{r}
 #| error: TRUE
@@ -52,11 +54,12 @@ d_three <- inner_join(d_one, d_two, by =
                       )
 d_three
 ```
-Issue noted: the above code join creates duplicate x and y verso
+
+*Issue noted: the above code join creates duplicate x and y versions of several variables.*
 
 ### Inner Join Version 2
 
-Use an inner_join() on all variables other than G1, G2, G3, paid, and absences. Use this form of the combined data in further exercises.
+Use an `inner_join()` on all variables other than `G1`, `G2`, `G3`, `paid`, and `absences`. Use this form of the combined data in further exercises.
 
 ```{r}
 students_math <- read_delim("student-mat.csv", delim = ";")
@@ -73,6 +76,7 @@ students
 ```
 
 Print column names for joined `students` tibble
+
 ```{r}
 print(colnames(students))
 ```
@@ -81,7 +85,7 @@ print(colnames(students))
 
 Next, for the math data, Portuguese data, and combined data, choose at least four categorical variables of interest and convert those into factor variables in each tibble (use the same four variables in each).
 
-Identify all factor variables.
+Identify all potential factor variables. *Note: consistent with some social science research practices, variables measured on a Likert scale are treated as interval variables for analysis purposes.*
 ```{r}
 factors_yn <- c("schoolsup", "famsup", "paid", "paid_math", "paid_port", "activities", "nursery", "higher", "internet", "romantic")
 factors_ord <- c("Medu", "Fedu", "traveltime", "studytime", "famsize")
@@ -113,7 +117,7 @@ students
 
 ```
 
-Use `mutate` to convert all identified variables to factors with appropriate options.
+Use `mutate` to convert all identified potential factor variables to factors with appropriate options.
 ```{r}
 students <-
   students |>
@@ -137,13 +141,13 @@ students_port <-
     mutate(across(any_of(factors_yn), as_factor))
 ```
 
-
 ## Task 2: Summarize the Data
 
 ### Inspect Data
 
 Look at how the data is stored and see if everything makes sense.
 ```{r}
+spec(students)
 str(students)
 ```
 
@@ -161,6 +165,7 @@ students |>
   select(everything()) |>
   summarize(across(everything(), ~ sum(. == "")))
 ```
+
 Check for missing values in `students_math`.
 ```{r}
 students_math |>
@@ -191,7 +196,7 @@ students_port |>
   summarize(across(everything(), ~ sum(. == "")))
 ```
 
-### Categorical variables
+### Categorical Variables
 
 Create a one-way contingency table, a two-way contingency table, and a three-way contingency table for some of the factor variables created previously. Use `table()` to accomplish this.
 
@@ -219,18 +224,21 @@ three_way_cond <- table(students$sex, students$school, students$address)
 three_way_cond[, , "R"]
 ```
 
+One-way contingency table on Father's education (`Fedu`) using `dplyr`:
 ```{r}
 students |>
   group_by(Fedu) |>
   summarise(count = n())
 ```
 
+Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`) using `dplyr`:
 ```{r}
 students |>
   group_by(Mjob, Medu) |>
   summarise(count = n())
 ```
 
+Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`) using `dplyr`. Using `pivot_wider()` to make the result look more like the output from `table()`:
 ```{r}
 students |>
   group_by(Mjob, Medu) |>
@@ -238,6 +246,7 @@ students |>
   pivot_wider(names_from = Medu, values_from = count)
 ```
 
+Create a stacked bar graph. Give relevant x and y labels, and a title for the plot:
 ```{r}
 students |>
   ggplot(aes(x = sex, fill = activities)) +
@@ -249,6 +258,7 @@ students |>
   scale_fill_brewer(palette="Set1")
 ```
 
+Create a side-by-side bar graph. Give relevant x and y labels, and a title for the plot:
 ```{r}
 students |>
   ggplot(aes(x = sex, fill = romantic)) +
@@ -259,6 +269,9 @@ students |>
   ggtitle("Romantic Relationships by Sex") +
   scale_fill_brewer(palette="Set1")
 ```
+
+### Numeric Variables
+
 
 ```{r}
 students |>
