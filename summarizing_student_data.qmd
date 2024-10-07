@@ -12,8 +12,11 @@ library(tidyverse)
 library(conflicted)
 conflicts_prefer(dplyr::filter())
 ```
+## Task 1: Read in Data and Modify
 
-First, modify the code provided with the download to read in the data from a local file source (your downloaded .csv files) and combine the two data frames. Use local paths as they do in their code.
+### Merge Version
+
+First, modify the code provided with the download to read in the data from a local file source (the downloaded `.csv` files) and combine the two data frames. Use local paths.
 
 ```{r}
 d1 <- read.table("student-mat.csv",sep=";",header=TRUE)
@@ -22,8 +25,9 @@ d2 <- read.table("student-por.csv",sep=";",header=TRUE)
 d3 <- merge(d1,d2,by=c("school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"))
 print(nrow(d3)) # 382 students
 ```
+### Inner Join Version 1
 
-Second, read in and combine the data using functions from the tidyverse. Use an inner_join() on the variables they used in their code. Do you notice any issues? Make a note of the issue.
+Second, read in and combine the data using functions from the tidyverse. Use an inner_join() on the variables they used in their code. Make a note of any  issues.
 
 ```{r}
 #| error: TRUE
@@ -48,6 +52,9 @@ d_three <- inner_join(d_one, d_two, by =
                       )
 d_three
 ```
+Issue noted: the above code join creates duplicate x and y verso
+
+### Inner Join Version 2
 
 Use an inner_join() on all variables other than G1, G2, G3, paid, and absences. Use this form of the combined data in further exercises.
 
@@ -65,10 +72,16 @@ students <- inner_join(students_math,
 students
 ```
 
+Print column names for joined `students` tibble
 ```{r}
 print(colnames(students))
 ```
 
+### Establish Factors
+
+Next, for the math data, Portuguese data, and combined data, choose at least four categorical variables of interest and convert those into factor variables in each tibble (use the same four variables in each).
+
+Identify all factor variables.
 ```{r}
 factors_yn <- c("schoolsup", "famsup", "paid", "paid_math", "paid_port", "activities", "nursery", "higher", "internet", "romantic")
 factors_ord <- c("Medu", "Fedu", "traveltime", "studytime", "famsize")
@@ -76,6 +89,9 @@ factors_nom <- c("school", "sex", "address", "Pstatus", "Mjob", "Fjob", "reason"
 ```
 
 ```{r}
+#| echo: false
+#| eval: false
+
 factorize <- function (df) {
   df <-
     df |>
@@ -97,10 +113,8 @@ students
 
 ```
 
+Use `mutate` to convert all identified variables to factors with appropriate options.
 ```{r}
-
-#cannot figure out how to get function to overwrite dataframe
-
 students <-
   students |>
     mutate(across(all_of(factors_ord), ~factor(.x, ordered = T))) |>
@@ -123,6 +137,17 @@ students_port <-
     mutate(across(any_of(factors_yn), as_factor))
 ```
 
+
+## Task 2: Summarize the Data
+
+### Inspect Data
+
+Look at how the data is stored and see if everything makes sense.
+```{r}
+str(students)
+```
+
+Check for missing values in `students`.
 ```{r}
 students |>
   select(everything()) |>
@@ -136,7 +161,7 @@ students |>
   select(everything()) |>
   summarize(across(everything(), ~ sum(. == "")))
 ```
-
+Check for missing values in `students_math`.
 ```{r}
 students_math |>
   select(everything()) |>
@@ -151,6 +176,7 @@ students_math |>
   summarize(across(everything(), ~ sum(. == "")))
 ```
 
+Check for missing values in `students_port`.
 ```{r}
 students_port |>
   select(everything()) |>
@@ -164,32 +190,30 @@ students_port |>
   select(everything()) |>
   summarize(across(everything(), ~ sum(. == "")))
 ```
+
+### Categorical variables
 
 Create a one-way contingency table, a two-way contingency table, and a three-way contingency table for some of the factor variables created previously. Use `table()` to accomplish this.
 
 One-way contingency table on Father's education (`Fedu`):
-
 ```{r}
 one_way <- table(students$Fedu)
 one_way
 ```
 
 Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`):
-
 ```{r}
 two_way <- table(students$Mjob, students$Medu)
 two_way
 ```
 
 Three-way contigency table on guardian, family size and family support:
-
 ```{r}
 three_way <- table(students$guardian, students$famsize, students$famsup)
 three_way
 ```
 
 Conditional three-way contigency table on sex and school for only rural addresses:
-
 ```{r}
 three_way_cond <- table(students$sex, students$school, students$address)
 three_way_cond[, , "R"]
