@@ -147,7 +147,6 @@ students_port <-
 
 Look at how the data is stored and see if everything makes sense.
 ```{r}
-spec(students)
 str(students)
 ```
 
@@ -205,24 +204,28 @@ One-way contingency table on Father's education (`Fedu`):
 one_way <- table(students$Fedu)
 one_way
 ```
+*Takeaway: across the students' data set it looks like the father is approximately equally likely to have a middle-school, high-school, or college education.*
 
 Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`):
 ```{r}
 two_way <- table(students$Mjob, students$Medu)
 two_way
 ```
+*Takeaway: across the students' data set it looks like if the mother is employed in health or teaching, it is more likely she has earned higher education.*
 
 Three-way contigency table on guardian, family size and family support:
 ```{r}
 three_way <- table(students$guardian, students$famsize, students$famsup)
 three_way
 ```
+*Takeaway: for students where the father is the primary guardian, the presence of family education support seems proportionally greater for larger family sizes.*
 
 Conditional three-way contigency table on sex and school for only rural addresses:
 ```{r}
 three_way_cond <- table(students$sex, students$school, students$address)
 three_way_cond[, , "R"]
 ```
+*Takeaway: Mousinho da Silveira has a smaller population of rural students than Gabriel Pereira, and, of that population, is more weighted toward female students.*
 
 One-way contingency table on Father's education (`Fedu`) using `dplyr`:
 ```{r}
@@ -230,6 +233,7 @@ students |>
   group_by(Fedu) |>
   summarise(count = n())
 ```
+*Takeaway: across the students' data set it looks like the father is approximately equally likely to have a middle-school, high-school, or college education.*
 
 Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`) using `dplyr`:
 ```{r}
@@ -245,6 +249,7 @@ students |>
   summarise(count = n()) |>
   pivot_wider(names_from = Medu, values_from = count)
 ```
+*Takeaway: across the students' data set it looks like if the mother is employed in health or teaching, it is more likely she has earned higher education.*
 
 Create a stacked bar graph. Give relevant x and y labels, and a title for the plot:
 ```{r}
@@ -257,6 +262,7 @@ students |>
   ggtitle("Participation in Activities by Sex") +
   scale_fill_brewer(palette="Set1")
 ```
+*Takeaway: males have both a higher absolute and relative participation in extra-curricular activities.*
 
 Create a side-by-side bar graph. Give relevant x and y labels, and a title for the plot:
 ```{r}
@@ -269,10 +275,11 @@ students |>
   ggtitle("Romantic Relationships by Sex") +
   scale_fill_brewer(palette="Set1")
 ```
+*Takeaway: female students tend not to be in a romantic relationship at about a 2:1 ratio; for males the ratio of not-to-in is slightly higher.*
 
 ### Numeric Variables
 
-
+Find measures of center and spread for the numeric variables `absences` and `G3` for both math and Portguese.
 ```{r}
 students |>
   summarise(across(c(absences_math, G3_math, absences_port, G3_port),
@@ -281,7 +288,21 @@ students |>
   round(2) |>
   t()
 ```
+*Takeaway: absences show both a higher center and greater spread for math than for Portuguese; average math G3 scores are a bit lower than Portuguese, perhaps related to greater absences.*
 
+Repeat the above analysis while subsetting the data in a meaningful way, in this case on commute time greater than 30 minutes.
+```{r}
+students |>
+  filter(traveltime >= 3) |>
+  summarise(across(c(absences_math, G3_math, absences_port, G3_port),
+                   list("mean" = mean, "median" = median, "stdev" = sd, "IQR" = IQR),
+                   .names = "{.fn}_{.col}")) |>
+  round(2) |>
+  t()
+```
+*Takeaway: there looks to be less variability in adsences for math compared to the full sample; average G3 scores are somewhat lower for both math and Portuguese compared to the full sample.*
+
+Find measures of center and spread for the numeric variables `G1` and `G3` for both math and Portuguese across a single grouping variable, in this case whether the student had extra educational support from the school.
 ```{r}
 students |>
   group_by(schoolsup) |>
@@ -290,7 +311,9 @@ students |>
                    .names = "{.fn}_{.col}")) |>
   mutate(across(where(is.numeric), round, 2))
 ```
+*Takeaway: students with extra educational support showed a modest increase from G1 scores to G3 scores; the same was true for Portuguese, although the students wihtout extra support also raised their scores.*
 
+Find measures of center and spread for the numeric variables `G1` and `G3` for both math and Portuguese across two grouping variable, in this case whether the student had extra paid classes in either or both subjects.
 ```{r}
 students |>
   group_by(paid_math, paid_port) |>
@@ -299,30 +322,36 @@ students |>
                    .names = "{.fn}_{.col}")) |>
   mutate(across(where(is.numeric), round, 2))
 ```
+*Takeaway: ...*
 
+Create a correlation matrix between all of the numeric variables.
 ```{r}
 students |>
   select(starts_with(c("age", "absences", "G1", "G2", "G3"))) |>
   cor() |>
   round(2)
 ```
+*Takeaway: ...*
 
-Create a histogram, kernel density plot, and boxplot for two of the numeric variables across one of the categorical variables (that is, create graphs that can compare the distributions across the groups on the same plot (no faceting here)). Add appropriate labels and titles.
-
+Create a histogram for two of the numeric variables across one of the categorical variables (that is, create graphs that can compare the distributions across the groups on the same plot (no faceting here)). Add appropriate labels and titles.
 ```{r}
 students |>
   ggplot(aes(G3_math)) +
   geom_histogram(alpha = 0.5, aes(fill = internet), bins = 10) +
   scale_fill_brewer(palette="Paired")
 ```
+*Takeaway: ...*
 
+Create a kernel density plotfor two of the numeric variables across one of the categorical variables (that is, create graphs that can compare the distributions across the groups on the same plot (no faceting here)). Add appropriate labels and titles.
 ```{r}
 students |>
   ggplot(aes(G3_math)) +
   geom_density(alpha = 0.5, aes(fill = internet)) +
   scale_fill_brewer(palette="Paired")
 ```
+*Takeaway: ...*
 
+Create a boxplot for two of the numeric variables across one of the categorical variables (that is, create graphs that can compare the distributions across the groups on the same plot (no faceting here)). Add appropriate labels and titles.
 ```{r}
 students |>
   ggplot(aes(G3_math)) +
@@ -330,7 +359,9 @@ students |>
   coord_flip() +
   scale_fill_brewer(palette="Paired")
 ```
+*Takeaway: ...*
 
+Create two scatterplots relating a G3 variable to other numeric variables (put G3 on the y-axis). You should jitter the points if they sit on top of each other. Color the points by a categorical variable in each. Add appropriate labels and titles.
 ```{r}
 students |>
   ggplot(aes(G1_math, G3_math, color = paid_math)) +
@@ -338,7 +369,9 @@ students |>
   scale_color_brewer(palette = "Set1") +
   geom_smooth(method = lm)
 ```
+*Takeaway: ...*
 
+Create two scatterplots relating a G3 variable to other numeric variables (put G3 on the y-axis). You should jitter the points if they sit on top of each other. Color the points by a categorical variable in each. Add appropriate labels and titles.
 ```{r}
 students |>
   ggplot(aes(G3_port, G3_math, color = schoolsup)) +
@@ -346,7 +379,9 @@ students |>
   scale_color_brewer(palette = "Set1") +
   geom_smooth(method = lm)
 ```
+*Takeaway: ...*
 
+Repeat the scatter plot step but use faceting to obtain graphs at each setting of another categorical variable.
 ```{r}
 students |>
   ggplot(aes(G1_math, G3_math, color = paid_math)) +
@@ -355,7 +390,9 @@ students |>
   geom_smooth(method = lm) +
   facet_wrap(~ studytime)
 ```
+*Takeaway: ...*
 
+Repeat the scatter plot step but use faceting to obtain graphs at each setting of another categorical variable.
 ```{r}
 students |>
   ggplot(aes(G3_port, G3_math, color = schoolsup)) +
@@ -364,7 +401,9 @@ students |>
   geom_smooth(method = lm) +
   facet_wrap(~ studytime)
 ```
+*Takeaway: ...*
 
+Repeat the scatter plot step but use faceting to obtain graphs at each combination of two categorical variables.
 ```{r}
 students |>
   ggplot(aes(G1_math, G3_math, color = paid_math)) +
@@ -373,7 +412,9 @@ students |>
   geom_smooth(method = lm) +
   facet_wrap(romantic ~ activities)
 ```
+*Takeaway: ...*
 
+Repeat the scatter plot step but use faceting to obtain graphs at each combination of two categorical variables.
 ```{r}
 students |>
   ggplot(aes(G3_port, G3_math, color = schoolsup)) +
@@ -382,3 +423,4 @@ students |>
   geom_smooth(method = lm) +
   facet_wrap(romantic ~ activities)
 ```
+*Takeaway: ...*
