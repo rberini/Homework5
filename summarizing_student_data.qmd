@@ -1,0 +1,347 @@
+---
+title: "Summarizing Student Data"
+author: "Robert Berini"
+format: html
+editor: visual
+---
+
+## Load Required Packages
+
+```{r}
+library(tidyverse)
+library(conflicted)
+conflicts_prefer(dplyr::filter())
+```
+
+First, modify the code provided with the download to read in the data from a local file source (your downloaded .csv files) and combine the two data frames. Use local paths as they do in their code.
+
+```{r}
+d1 <- read.table("student-mat.csv",sep=";",header=TRUE)
+d2 <- read.table("student-por.csv",sep=";",header=TRUE)
+
+d3 <- merge(d1,d2,by=c("school","sex","age","address","famsize","Pstatus","Medu","Fedu","Mjob","Fjob","reason","nursery","internet"))
+print(nrow(d3)) # 382 students
+```
+
+Second, read in and combine the data using functions from the tidyverse. Use an inner_join() on the variables they used in their code. Do you notice any issues? Make a note of the issue.
+
+```{r}
+#| error: TRUE
+
+d_one <- read_delim("student-mat.csv", delim = ";")
+d_two <- read_delim("student-por.csv", delim = ";")
+
+d_three <- inner_join(d_one, d_two, by =
+                         c("school",
+                           "sex",
+                           "age",
+                           "address",
+                           "famsize",
+                           "Pstatus",
+                           "Medu",
+                           "Fedu",
+                           "Mjob",
+                           "Fjob",
+                           "reason",
+                           "nursery",
+                           "internet")
+                      )
+d_three
+```
+
+Use an inner_join() on all variables other than G1, G2, G3, paid, and absences. Use this form of the combined data in further exercises.
+
+```{r}
+students_math <- read_delim("student-mat.csv", delim = ";")
+students_port <- read_delim("student-por.csv", delim = ";")
+
+exclude_cols <- c("G1", "G2", "G3", "paid", "absences")
+
+students <- inner_join(students_math,
+                       students_port,
+                       by = colnames(students_math)[! colnames(students_math)%in% exclude_cols],
+                       suffix = c("_math", "_port")
+                       )
+students
+```
+
+```{r}
+print(colnames(students))
+```
+
+```{r}
+factors_yn <- c("schoolsup", "famsup", "paid", "paid_math", "paid_port", "activities", "nursery", "higher", "internet", "romantic")
+factors_ord <- c("Medu", "Fedu", "traveltime", "studytime", "famsize")
+factors_nom <- c("school", "sex", "address", "Pstatus", "Mjob", "Fjob", "reason", "guardian")
+```
+
+```{r}
+factorize <- function (df) {
+  df <-
+    df |>
+      mutate(across(all_of(factors_ord), ~factor(.x, ordered = T))) |>
+      mutate(across(all_of(factors_nom), as_factor)) |>
+      mutate(famsize = fct_rev(famsize)) |> 
+      mutate(across(any_of(factors_yn), as_factor))
+  #assign({{ df}}, df, envir = .GlobalEnv)
+}
+```
+
+```{r}
+#| eval: false
+#| echo: false
+
+#ignoring this code block because cannot figure out how to get function to overwrite dataframe
+lapply(list(students, students_math, students_port), factorize)
+students
+
+```
+
+```{r}
+
+#cannot figure out how to get function to overwrite dataframe
+
+students <-
+  students |>
+    mutate(across(all_of(factors_ord), ~factor(.x, ordered = T))) |>
+    mutate(across(all_of(factors_nom), as_factor)) |>
+    mutate(famsize = fct_rev(famsize)) |> 
+    mutate(across(any_of(factors_yn), as_factor))
+
+students_math <-
+  students_math |>
+    mutate(across(all_of(factors_ord), ~factor(.x, ordered = T))) |>
+    mutate(across(all_of(factors_nom), as_factor)) |>
+    mutate(famsize = fct_rev(famsize)) |> 
+    mutate(across(any_of(factors_yn), as_factor))
+
+students_port <-
+  students_port |>
+    mutate(across(all_of(factors_ord), ~factor(.x, ordered = T))) |>
+    mutate(across(all_of(factors_nom), as_factor)) |>
+    mutate(famsize = fct_rev(famsize)) |> 
+    mutate(across(any_of(factors_yn), as_factor))
+```
+
+```{r}
+students |>
+  select(everything()) |>
+  summarize(across(everything(), ~ sum(is.na(.))))
+
+students |>
+  select(where(is.numeric)) |>
+  summarize(across(everything(), ~ sum(is.nan(.))))
+
+students |>
+  select(everything()) |>
+  summarize(across(everything(), ~ sum(. == "")))
+```
+
+```{r}
+students_math |>
+  select(everything()) |>
+  summarize(across(everything(), ~ sum(is.na(.))))
+
+students_math |>
+  select(where(is.numeric)) |>
+  summarize(across(everything(), ~ sum(is.nan(.))))
+
+students_math |>
+  select(everything()) |>
+  summarize(across(everything(), ~ sum(. == "")))
+```
+
+```{r}
+students_port |>
+  select(everything()) |>
+  summarize(across(everything(), ~ sum(is.na(.))))
+
+students_port |>
+  select(where(is.numeric)) |>
+  summarize(across(everything(), ~ sum(is.nan(.))))
+
+students_port |>
+  select(everything()) |>
+  summarize(across(everything(), ~ sum(. == "")))
+```
+
+Create a one-way contingency table, a two-way contingency table, and a three-way contingency table for some of the factor variables created previously. Use `table()` to accomplish this.
+
+One-way contingency table on Father's education (`Fedu`):
+
+```{r}
+one_way <- table(students$Fedu)
+one_way
+```
+
+Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`):
+
+```{r}
+two_way <- table(students$Mjob, students$Medu)
+two_way
+```
+
+Three-way contigency table on guardian, family size and family support:
+
+```{r}
+three_way <- table(students$guardian, students$famsize, students$famsup)
+three_way
+```
+
+Conditional three-way contigency table on sex and school for only rural addresses:
+
+```{r}
+three_way_cond <- table(students$sex, students$school, students$address)
+three_way_cond[, , "R"]
+```
+
+```{r}
+students |>
+  group_by(Fedu) |>
+  summarise(count = n())
+```
+
+```{r}
+students |>
+  group_by(Mjob, Medu) |>
+  summarise(count = n())
+```
+
+```{r}
+students |>
+  group_by(Mjob, Medu) |>
+  summarise(count = n()) |>
+  pivot_wider(names_from = Medu, values_from = count)
+```
+
+```{r}
+students |>
+  ggplot(aes(x = sex, fill = activities)) +
+  geom_bar() +
+  xlab("Sex") +
+  ylab("Count") +
+  labs(fill = "Activities") +
+  ggtitle("Participation in Activities by Sex") +
+  scale_fill_brewer(palette="Set1")
+```
+
+```{r}
+students |>
+  ggplot(aes(x = sex, fill = romantic)) +
+  geom_bar(position = "dodge") +
+  xlab("Sex") +
+  ylab("Count") +
+  labs(fill = "Relationship") +
+  ggtitle("Romantic Relationships by Sex") +
+  scale_fill_brewer(palette="Set1")
+```
+
+```{r}
+students |>
+  summarise(across(c(absences_math, G3_math, absences_port, G3_port),
+                   list("mean" = mean, "median" = median, "stdev" = sd, "IQR" = IQR),
+                   .names = "{.fn}_{.col}")) |>
+  round(2) |>
+  t()
+```
+
+```{r}
+students |>
+  group_by(schoolsup) |>
+  summarise(across(c(G1_math, G3_math, G1_port, G3_port),
+                   list("mean" = mean, "median" = median, "stdev" = sd, "IQR" = IQR),
+                   .names = "{.fn}_{.col}")) |>
+  mutate(across(where(is.numeric), round, 2))
+```
+
+```{r}
+students |>
+  group_by(paid_math, paid_port) |>
+  summarise(across(c(G1_math, G3_math, G1_port, G3_port),
+                   list("mean" = mean, "median" = median, "stdev" = sd, "IQR" = IQR),
+                   .names = "{.fn}_{.col}")) |>
+  mutate(across(where(is.numeric), round, 2))
+```
+
+```{r}
+students |>
+  select(starts_with(c("age", "absences", "G1", "G2", "G3"))) |>
+  cor() |>
+  round(2)
+```
+
+Create a histogram, kernel density plot, and boxplot for two of the numeric variables across one of the categorical variables (that is, create graphs that can compare the distributions across the groups on the same plot (no faceting here)). Add appropriate labels and titles.
+
+```{r}
+students |>
+  ggplot(aes(G3_math)) +
+  geom_histogram(alpha = 0.5, aes(fill = internet), bins = 10) +
+  scale_fill_brewer(palette="Paired")
+```
+
+```{r}
+students |>
+  ggplot(aes(G3_math)) +
+  geom_density(alpha = 0.5, aes(fill = internet)) +
+  scale_fill_brewer(palette="Paired")
+```
+
+```{r}
+students |>
+  ggplot(aes(G3_math)) +
+  geom_boxplot(aes(fill = internet)) +
+  coord_flip() +
+  scale_fill_brewer(palette="Paired")
+```
+
+```{r}
+students |>
+  ggplot(aes(G1_math, G3_math, color = paid_math)) +
+  geom_point() +
+  scale_color_brewer(palette = "Set1") +
+  geom_smooth(method = lm)
+```
+
+```{r}
+students |>
+  ggplot(aes(G3_port, G3_math, color = schoolsup)) +
+  geom_point() +
+  scale_color_brewer(palette = "Set1") +
+  geom_smooth(method = lm)
+```
+
+```{r}
+students |>
+  ggplot(aes(G1_math, G3_math, color = paid_math)) +
+  geom_point() +
+  scale_color_brewer(palette = "Set1") +
+  geom_smooth(method = lm) +
+  facet_wrap(~ studytime)
+```
+
+```{r}
+students |>
+  ggplot(aes(G3_port, G3_math, color = schoolsup)) +
+  geom_point() +
+  scale_color_brewer(palette = "Set1") +
+  geom_smooth(method = lm) +
+  facet_wrap(~ studytime)
+```
+
+```{r}
+students |>
+  ggplot(aes(G1_math, G3_math, color = paid_math)) +
+  geom_point() +
+  scale_color_brewer(palette = "Set1") +
+  geom_smooth(method = lm) +
+  facet_wrap(romantic ~ activities)
+```
+
+```{r}
+students |>
+  ggplot(aes(G3_port, G3_math, color = schoolsup)) +
+  geom_point() +
+  scale_color_brewer(palette = "Set1") +
+  geom_smooth(method = lm) +
+  facet_wrap(romantic ~ activities)
+```
