@@ -29,8 +29,7 @@ print(nrow(d3)) # 382 students
 
 ### Inner Join Version 1
 
-Second, read in and combine the data using functions from the tidyverse. Use an `inner_join()` on the variables used in the UCI code. Make a note of any issues.
-
+Second, read in and combine the data using functions from the tidyverse. Use an `inner_join()` on the variables used in the **UCI** code. Make a note of any issues.
 ```{r}
 #| error: TRUE
 
@@ -55,12 +54,11 @@ d_three <- inner_join(d_one, d_two, by =
 d_three
 ```
 
-*Issue noted: the above code join creates duplicate x and y versions of several variables.*
+*Issue noted: the above join code creates duplicate x and y versions of several variables where the values are the same.*
 
 ### Inner Join Version 2
 
 Use an `inner_join()` on all variables other than `G1`, `G2`, `G3`, `paid`, and `absences`. Use this form of the combined data in further exercises.
-
 ```{r}
 students_math <- read_delim("student-mat.csv", delim = ";")
 students_port <- read_delim("student-por.csv", delim = ";")
@@ -76,7 +74,6 @@ students
 ```
 
 Print column names for joined `students` tibble
-
 ```{r}
 print(colnames(students))
 ```
@@ -85,7 +82,7 @@ print(colnames(students))
 
 Next, for the math data, Portuguese data, and combined data, choose at least four categorical variables of interest and convert those into factor variables in each tibble (use the same four variables in each).
 
-Identify all potential factor variables. *Note: consistent with some social science research practices, variables measured on a Likert scale are treated as interval variables for analysis purposes.*
+Identify all potential factor variables. *Note: consistent with some social science research practices, variables measured on a Likert scale (e.g., `health`) are treated as interval variables for analysis purposes.*
 ```{r}
 factors_yn <- c("schoolsup", "famsup", "paid", "paid_math", "paid_port", "activities", "nursery", "higher", "internet", "romantic")
 factors_ord <- c("Medu", "Fedu", "traveltime", "studytime", "famsize")
@@ -117,7 +114,7 @@ students
 
 ```
 
-Use `mutate` to convert all identified potential factor variables to factors with appropriate options.
+Use `mutate` to convert all identified binary, nominal, and ordinal variables to factors with appropriate levels.
 ```{r}
 students <-
   students |>
@@ -275,7 +272,7 @@ students |>
   ggtitle("Romantic Relationships by Sex") +
   scale_fill_brewer(palette="Set1")
 ```
-*Takeaway: female students tend not to be in a romantic relationship at about a 2:1 ratio; for males the ratio of not-to-in is slightly higher.*
+*Takeaway: female students tend not to be in a romantic relationship at about a 2:1 ratio; for males the ratio of not:in is slightly higher.*
 
 ### Numeric Variables
 
@@ -322,7 +319,7 @@ students |>
                    .names = "{.fn}_{.col}")) |>
   mutate(across(where(is.numeric), round, 2))
 ```
-*Takeaway: ...*
+*Takeaway: students with paid extra classes in both math and Portuguese (i.e., yes - yes) actually show the lower mean scores across all four variables; students without paid extra classes (i.e., no - no) show the highest interquartile range across all four variables.*
 
 Create a correlation matrix between all of the numeric variables.
 ```{r}
@@ -331,53 +328,116 @@ students |>
   cor() |>
   round(2)
 ```
-*Takeaway: ...*
+*Takeaway: both age and the two absence variables show fairly weak correlation with the score variables; perhaps unsurprisingly, the scoring variables show medium to strong correlation with one another.*
 
-Create a histogram for two of the numeric variables across one of the categorical variables (that is, create graphs that can compare the distributions across the groups on the same plot (no faceting here)). Add appropriate labels and titles.
+Create a histogram for Final Math Score (`G3_math`) across one of the categorical variables, in this case Internet Access (`internet`).
 ```{r}
 students |>
   ggplot(aes(G3_math)) +
   geom_histogram(alpha = 0.5, aes(fill = internet), bins = 10) +
+  xlab("Final Math Score") +
+  ylab("Count") +
+  labs(title = "Final Math Score Distribution",
+       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
   scale_fill_brewer(palette="Paired")
 ```
 *Takeaway: ...*
 
-Create a kernel density plotfor two of the numeric variables across one of the categorical variables (that is, create graphs that can compare the distributions across the groups on the same plot (no faceting here)). Add appropriate labels and titles.
+Create a histogram for Final Portuguese Score (`G3_port`) across one of the categorical variables, in this case Internet Access (`internet`).
+```{r}
+students |>
+  ggplot(aes(G3_port)) +
+  geom_histogram(alpha = 0.5, aes(fill = internet), bins = 10) +
+  xlab("Final Portuguese Score") +
+  ylab("Count") +
+  labs(title = "Final Portuguese Score Distribution",
+       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
+  scale_fill_brewer(palette="Paired")
+```
+*Takeaway: ...*
+
+Create a kernel density plot for Final Math Score (`G3_math`) across one of the categorical variables, in this case Internet Access (`internet`).
 ```{r}
 students |>
   ggplot(aes(G3_math)) +
   geom_density(alpha = 0.5, aes(fill = internet)) +
+  xlab("Final Math Score") +
+  ylab("Count") +
+  labs(title = "Final Math Score Distribution",
+       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
   scale_fill_brewer(palette="Paired")
 ```
 *Takeaway: ...*
 
-Create a boxplot for two of the numeric variables across one of the categorical variables (that is, create graphs that can compare the distributions across the groups on the same plot (no faceting here)). Add appropriate labels and titles.
+Create a kernel density plot for Final Portuguese Score (`G3_port`) across one of the categorical variables, in this case Internet Access (`internet`).
 ```{r}
 students |>
-  ggplot(aes(G3_math)) +
-  geom_boxplot(aes(fill = internet)) +
-  coord_flip() +
+  ggplot(aes(G3_port)) +
+  geom_density(alpha = 0.5, aes(fill = internet)) +
+  xlab("Final Portuguese Score") +
+  ylab("Count") +
+  labs(title = "Final Portuguese Score Distribution",
+       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
   scale_fill_brewer(palette="Paired")
 ```
 *Takeaway: ...*
 
-Create two scatterplots relating a G3 variable to other numeric variables (put G3 on the y-axis). You should jitter the points if they sit on top of each other. Color the points by a categorical variable in each. Add appropriate labels and titles.
+Create a box plot for Final Math Score (`G3_math`) across one of the categorical variables, in this case Internet Access (`internet`).
+```{r}
+students |>
+  ggplot(aes(G3_math, internet)) +
+  geom_boxplot(aes(fill = internet)) +
+  coord_flip() +
+  xlab("Final Math Score") +
+  ylab("Internet Access") +
+  labs(title = "Final Math Score Distribution",
+       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette="Paired")
+```
+*Takeaway: ...*
+
+Create a box plot for Final Portuguese Score (`G3_port`) across one of the categorical variables, in this case Internet Access (`internet`).
+```{r}
+students |>
+  ggplot(aes(G3_port, internet)) +
+  geom_boxplot(aes(fill = internet)) +
+  coord_flip() +
+  xlab("Final Portuguese Score") +
+  ylab("Internet Access") +
+  labs(title = "Final Portuguese Score Distribution",
+       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
+  theme(legend.position = "none") +
+  scale_fill_brewer(palette="Paired")
+```
+*Takeaway: ...*
+
+
+Create a scatterplot relating a `G3` variable, in this case `G3_math` to other numeric variables, in this case `G1_math`. Color the points by a categorical variable, in this case `path_math`.
 ```{r}
 students |>
   ggplot(aes(G1_math, G3_math, color = paid_math)) +
   geom_point() +
   scale_color_brewer(palette = "Set1") +
-  geom_smooth(method = lm)
+  geom_smooth(method = lm) +
+  xlab("First Period Math Grade") +
+  ylab("Final Math Grade") +
+  labs(title = "Relationship between First Period Grade and Final Grade",
+       subtitle = "Considering Effects of Paid Extra Class")
 ```
 *Takeaway: ...*
 
-Create two scatterplots relating a G3 variable to other numeric variables (put G3 on the y-axis). You should jitter the points if they sit on top of each other. Color the points by a categorical variable in each. Add appropriate labels and titles.
+Create a scatterplot relating a `G3` variable, in this case `G3_math` to other numeric variables, in this case `G3_port`. Color the points by a categorical variable, in this case `schoolsup`.
 ```{r}
 students |>
   ggplot(aes(G3_port, G3_math, color = schoolsup)) +
   geom_point() +
   scale_color_brewer(palette = "Set1") +
-  geom_smooth(method = lm)
+  geom_smooth(method = lm) +
+  xlab("Final Portuguese Grade") +
+  ylab("Final Math Grade") +
+  labs(title = "Relationship between Final Portuguese and Math Grades",
+       subtitle = "Considering Effects of Extra Educational Support")
 ```
 *Takeaway: ...*
 
