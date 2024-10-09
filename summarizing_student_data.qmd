@@ -30,6 +30,7 @@ print(nrow(d3)) # 382 students
 ### Inner Join Version 1
 
 Second, read in and combine the data using functions from the tidyverse. Use an `inner_join()` on the variables used in the **UCI** code. Make a note of any issues.
+
 ```{r}
 #| error: TRUE
 
@@ -59,6 +60,7 @@ d_three
 ### Inner Join Version 2
 
 Use an `inner_join()` on all variables other than `G1`, `G2`, `G3`, `paid`, and `absences`. Use this form of the combined data in further exercises.
+
 ```{r}
 students_math <- read_delim("student-mat.csv", delim = ";")
 students_port <- read_delim("student-por.csv", delim = ";")
@@ -74,15 +76,17 @@ students
 ```
 
 Print column names for joined `students` tibble
+
 ```{r}
 print(colnames(students))
 ```
 
 ### Establish Factors
 
-Next, for the math data, Portuguese data, and combined data, choose at least four categorical variables of interest and convert those into factor variables in each tibble (use the same four variables in each).
+Next, for the math data, Portuguese data, and combined data, choose at least four categorical variables of interest and convert those into factor variables in each tibble (use the same factor variables in each).
 
 Identify all potential factor variables. *Note: consistent with some social science research practices, variables measured on a Likert scale (e.g., `health`) are treated as interval variables for analysis purposes.*
+
 ```{r}
 factors_yn <- c("schoolsup", "famsup", "paid", "paid_math", "paid_port", "activities", "nursery", "higher", "internet", "romantic")
 factors_ord <- c("Medu", "Fedu", "traveltime", "studytime", "famsize")
@@ -115,6 +119,7 @@ students
 ```
 
 Use `mutate` to convert all identified binary, nominal, and ordinal variables to factors with appropriate levels.
+
 ```{r}
 students <-
   students |>
@@ -143,11 +148,13 @@ students_port <-
 ### Inspect Data
 
 Look at how the data is stored and see if everything makes sense.
+
 ```{r}
 str(students)
 ```
 
 Check for missing values in `students`.
+
 ```{r}
 students |>
   select(everything()) |>
@@ -163,6 +170,7 @@ students |>
 ```
 
 Check for missing values in `students_math`.
+
 ```{r}
 students_math |>
   select(everything()) |>
@@ -178,6 +186,7 @@ students_math |>
 ```
 
 Check for missing values in `students_port`.
+
 ```{r}
 students_port |>
   select(everything()) |>
@@ -197,42 +206,53 @@ students_port |>
 Create a one-way contingency table, a two-way contingency table, and a three-way contingency table for some of the factor variables created previously. Use `table()` to accomplish this.
 
 One-way contingency table on Father's education (`Fedu`):
+
 ```{r}
 one_way <- table(students$Fedu)
 one_way
 ```
+
 *Takeaway: across the students' data set it looks like the father is approximately equally likely to have a middle-school, high-school, or college education.*
 
 Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`):
+
 ```{r}
 two_way <- table(students$Mjob, students$Medu)
 two_way
 ```
+
 *Takeaway: across the students' data set it looks like if the mother is employed in health or teaching, it is more likely she has earned higher education.*
 
 Three-way contigency table on guardian, family size and family support:
+
 ```{r}
 three_way <- table(students$guardian, students$famsize, students$famsup)
 three_way
 ```
+
 *Takeaway: for students where the father is the primary guardian, the presence of family education support seems proportionally greater for larger family sizes.*
 
 Conditional three-way contigency table on sex and school for only rural addresses:
+
 ```{r}
 three_way_cond <- table(students$sex, students$school, students$address)
 three_way_cond[, , "R"]
 ```
+
 *Takeaway: Mousinho da Silveira has a smaller population of rural students than Gabriel Pereira, and, of that population, is more weighted toward female students.*
 
 One-way contingency table on Father's education (`Fedu`) using `dplyr`:
+
 ```{r}
 students |>
   group_by(Fedu) |>
   summarise(count = n())
 ```
+
 *Takeaway: across the students' data set it looks like the father is approximately equally likely to have a middle-school, high-school, or college education.*
 
 Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`) using `dplyr`:
+
 ```{r}
 students |>
   group_by(Mjob, Medu) |>
@@ -240,15 +260,18 @@ students |>
 ```
 
 Two-way contingency table on Mother's job (`Mjob`) and Mother's education (`Medu`) using `dplyr`. Using `pivot_wider()` to make the result look more like the output from `table()`:
+
 ```{r}
 students |>
   group_by(Mjob, Medu) |>
   summarise(count = n()) |>
   pivot_wider(names_from = Medu, values_from = count)
 ```
+
 *Takeaway: across the students' data set it looks like if the mother is employed in health or teaching, it is more likely she has earned higher education.*
 
 Create a stacked bar graph. Give relevant x and y labels, and a title for the plot:
+
 ```{r}
 students |>
   ggplot(aes(x = sex, fill = activities)) +
@@ -259,9 +282,11 @@ students |>
   ggtitle("Participation in Activities by Sex") +
   scale_fill_brewer(palette="Set1")
 ```
+
 *Takeaway: males have both a higher absolute and relative participation in extra-curricular activities.*
 
 Create a side-by-side bar graph. Give relevant x and y labels, and a title for the plot:
+
 ```{r}
 students |>
   ggplot(aes(x = sex, fill = romantic)) +
@@ -272,11 +297,13 @@ students |>
   ggtitle("Romantic Relationships by Sex") +
   scale_fill_brewer(palette="Set1")
 ```
+
 *Takeaway: female students tend not to be in a romantic relationship at about a 2:1 ratio; for males the ratio of not:in is slightly higher.*
 
 ### Numeric Variables
 
-Find measures of center and spread for the numeric variables `absences` and `G3` for both math and Portguese.
+Find measures of center and spread for the numeric variables `absences` and `G3` for both math and Portuguese.
+
 ```{r}
 students |>
   summarise(across(c(absences_math, G3_math, absences_port, G3_port),
@@ -285,9 +312,11 @@ students |>
   round(2) |>
   t()
 ```
+
 *Takeaway: absences show both a higher center and greater spread for math than for Portuguese; average math G3 scores are a bit lower than Portuguese, perhaps related to greater absences.*
 
-Repeat the above analysis while subsetting the data in a meaningful way, in this case on commute time greater than 30 minutes.
+Repeat the above analysis while subsetting the data in a meaningful way, in this case on **commute time** greater than 30 minutes.
+
 ```{r}
 students |>
   filter(traveltime >= 3) |>
@@ -297,9 +326,11 @@ students |>
   round(2) |>
   t()
 ```
+
 *Takeaway: there looks to be less variability in adsences for math compared to the full sample; average G3 scores are somewhat lower for both math and Portuguese compared to the full sample.*
 
-Find measures of center and spread for the numeric variables `G1` and `G3` for both math and Portuguese across a single grouping variable, in this case whether the student had extra educational support from the school.
+Find measures of center and spread for the numeric variables `G1` and `G3` for both math and Portuguese across a single grouping variable, in this case whether the student had **extra educational support** from the school.
+
 ```{r}
 students |>
   group_by(schoolsup) |>
@@ -308,9 +339,11 @@ students |>
                    .names = "{.fn}_{.col}")) |>
   mutate(across(where(is.numeric), round, 2))
 ```
+
 *Takeaway: students with extra educational support showed a modest increase from G1 scores to G3 scores; the same was true for Portuguese, although the students wihtout extra support also raised their scores.*
 
-Find measures of center and spread for the numeric variables `G1` and `G3` for both math and Portuguese across two grouping variable, in this case whether the student had extra paid classes in either or both subjects.
+Find measures of center and spread for the numeric variables `G1` and `G3` for both math and Portuguese across two grouping variable, in this case whether the student had **extra paid classes** in either or both subjects.
+
 ```{r}
 students |>
   group_by(paid_math, paid_port) |>
@@ -319,18 +352,22 @@ students |>
                    .names = "{.fn}_{.col}")) |>
   mutate(across(where(is.numeric), round, 2))
 ```
+
 *Takeaway: students with paid extra classes in both math and Portuguese (i.e., yes - yes) actually show the lower mean scores across all four variables; students without paid extra classes (i.e., no - no) show the highest interquartile range across all four variables.*
 
 Create a correlation matrix between all of the numeric variables.
+
 ```{r}
 students |>
   select(starts_with(c("age", "absences", "G1", "G2", "G3"))) |>
   cor() |>
   round(2)
 ```
+
 *Takeaway: both age and the two absence variables show fairly weak correlation with the score variables; perhaps unsurprisingly, the scoring variables show medium to strong correlation with one another.*
 
 Create a histogram for Final Math Score (`G3_math`) across one of the categorical variables, in this case Internet Access (`internet`).
+
 ```{r}
 students |>
   ggplot(aes(G3_math)) +
@@ -338,7 +375,7 @@ students |>
   xlab("Final Math Score") +
   ylab("Count") +
   labs(title = "Final Math Score Distribution",
-       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
+       subtitle = "Considering Effects of Internet Access", fill = "Internet \nAccess") +
   scale_fill_brewer(palette="Paired")
 ```
 *Takeaway: ...*
@@ -351,7 +388,7 @@ students |>
   xlab("Final Portuguese Score") +
   ylab("Count") +
   labs(title = "Final Portuguese Score Distribution",
-       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
+       subtitle = "Considering Effects of Internet Access", fill = "Internet \nAccess") +
   scale_fill_brewer(palette="Paired")
 ```
 *Takeaway: ...*
@@ -364,7 +401,7 @@ students |>
   xlab("Final Math Score") +
   ylab("Count") +
   labs(title = "Final Math Score Distribution",
-       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
+       subtitle = "Considering Effects of Internet Access", fill = "Internet \nAccess") +
   scale_fill_brewer(palette="Paired")
 ```
 *Takeaway: ...*
@@ -377,7 +414,7 @@ students |>
   xlab("Final Portuguese Score") +
   ylab("Count") +
   labs(title = "Final Portuguese Score Distribution",
-       subtitle = "Considering Effects of Internet Access", fill = "Internet Access") +
+       subtitle = "Considering Effects of Internet Access", fill = "Internet \nAccess") +
   scale_fill_brewer(palette="Paired")
 ```
 *Takeaway: ...*
@@ -412,7 +449,6 @@ students |>
 ```
 *Takeaway: ...*
 
-
 Create a scatterplot relating a `G3` variable, in this case `G3_math` to other numeric variables, in this case `G1_math`. Color the points by a categorical variable, in this case `path_math`.
 ```{r}
 students |>
@@ -422,10 +458,11 @@ students |>
   geom_smooth(method = lm) +
   xlab("First Period Math Grade") +
   ylab("Final Math Grade") +
-  labs(title = "Relationship between First Period Grade and Final Grade",
-       subtitle = "Considering Effects of Paid Extra Class")
+  labs(title = "Relationship between First Period Math Grade and Final Grade",
+       subtitle = "Considering Effects of Paid Extra Classes",
+       color = "Extra Paid \nClasses")
 ```
-*Takeaway: ...*
+*Takeaway: first period and final period math scores appear fairly correlated; these is no obvious clustering for students with extra paid math classes*
 
 Create a scatterplot relating a `G3` variable, in this case `G3_math` to other numeric variables, in this case `G3_port`. Color the points by a categorical variable, in this case `schoolsup`.
 ```{r}
@@ -443,14 +480,19 @@ students |>
 
 Repeat the scatter plot step but use faceting to obtain graphs at each setting of another categorical variable.
 ```{r}
+study_time <- as_labeller(c("1" = "<2 hrs", "2" = "2-5 hrs", "3" = "5-10 hrs", "4" = ">10 hrs"))
+
 students |>
   ggplot(aes(G1_math, G3_math, color = paid_math)) +
   geom_point() +
   scale_color_brewer(palette = "Set1") +
-  geom_smooth(method = lm) +
-  facet_wrap(~ studytime)
+  xlab("First Period Math Grade") +
+  ylab("Final Math Grade") +
+  labs(title = "Relationship between First Period Math Grade and Final Grade",
+       subtitle = "Considering Effects of Paid Extra Classes and Study Time") +
+  facet_wrap(~ studytime, labeller = study_time)
 ```
-*Takeaway: ...*
+*Takeaway: amount of study time does not appear to materially influence the correlation between first period and final math scores; perhaps there is a modest influence on the slope*
 
 Repeat the scatter plot step but use faceting to obtain graphs at each setting of another categorical variable.
 ```{r}
@@ -458,10 +500,13 @@ students |>
   ggplot(aes(G3_port, G3_math, color = schoolsup)) +
   geom_point() +
   scale_color_brewer(palette = "Set1") +
-  geom_smooth(method = lm) +
-  facet_wrap(~ studytime)
+  xlab("Final Portuguese Grade") +
+  ylab("Final Math Grade") +
+  labs(title = "Relationship between Final Portuguese and Math Grades",
+       subtitle = "Considering Effects of Extra Educational Support and Study Time") +
+  facet_wrap(~ studytime, labeller = study_time)
 ```
-*Takeaway: ...*
+*Takeaway: final math and Portuguese scores appear correlated with medium strength across all facet levels; those with over 10 study hours appear to be more tightly packed toward the upper right*
 
 Repeat the scatter plot step but use faceting to obtain graphs at each combination of two categorical variables.
 ```{r}
@@ -469,10 +514,13 @@ students |>
   ggplot(aes(G1_math, G3_math, color = paid_math)) +
   geom_point() +
   scale_color_brewer(palette = "Set1") +
-  geom_smooth(method = lm) +
-  facet_wrap(romantic ~ activities)
+  xlab("First Period Math Grade") +
+  ylab("Final Math Grade") +
+  labs(title = "Relationship between First Period Math Grade and Final Grade",
+       subtitle = "Considering Effects of Paid Extra Classes and Studytime") +
+  facet_wrap(romantic ~ activities, labeller = label_context)
 ```
-*Takeaway: ...*
+*Takeaway: the presence of romantic relationships and involvement in extra-curricular activities do not seem to meaningfully change the relationship between first period and final math scores.*
 
 Repeat the scatter plot step but use faceting to obtain graphs at each combination of two categorical variables.
 ```{r}
@@ -480,7 +528,6 @@ students |>
   ggplot(aes(G3_port, G3_math, color = schoolsup)) +
   geom_point() +
   scale_color_brewer(palette = "Set1") +
-  geom_smooth(method = lm) +
-  facet_wrap(romantic ~ activities)
+  facet_wrap(romantic ~ activities, labeller = label_context)
 ```
-*Takeaway: ...*
+*Takeaway: students with only a romantic relationship (bottom left quadrant) appear more spread and more weakly correlated on final math and Portuguese scores*
