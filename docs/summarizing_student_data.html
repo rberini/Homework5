@@ -166,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="inner-join-version-1" class="level3">
 <h3 class="anchored" data-anchor-id="inner-join-version-1">Inner Join Version 1</h3>
-<p>Second, read in and combine the data using functions from the tidyverse. Use an <code>inner_join()</code> on the variables used in the <strong>UCI</strong> code. Make a note of any issues.</p>
+<p>Second, read in and combine the data using functions from the tidyverse. Use <code>inner_join()</code> on the variables used in the <strong>UCI</strong> code. Make a note of any issues (bee below).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>d_one <span class="ot">&lt;-</span> <span class="fu">read_delim</span>(<span class="st">"student-mat.csv"</span>, <span class="at">delim =</span> <span class="st">";"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -236,7 +236,7 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 #   G2.x &lt;dbl&gt;, G3.x &lt;dbl&gt;, guardian.y &lt;chr&gt;, traveltime.y &lt;dbl&gt;, …</code></pre>
 </div>
 </div>
-<p><em>Issue noted: the above join code creates duplicate x and y versions of several variables where the values are the same.</em></p>
+<p><em>Issue noted: the above join code creates duplicate x and y versions of several variables where the observations are the same.</em></p>
 </section>
 <section id="inner-join-version-2" class="level3">
 <h3 class="anchored" data-anchor-id="inner-join-version-2">Inner Join Version 2</h3>
@@ -875,7 +875,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: …</em></p>
+<p><em>Takeaway: the histogram shows no obvious difference in final math score based upon internet access</em></p>
 <p>Create a histogram for Final Portuguese Score (<code>G3_port</code>) across one of the categorical variables, in this case Internet Access (<code>internet</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -894,7 +894,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: …</em></p>
+<p><em>Takeaway: the histogram shows no obvious difference in final Portuguese score based upon internet access</em></p>
 <p>Create a kernel density plot for Final Math Score (<code>G3_math</code>) across one of the categorical variables, in this case Internet Access (<code>internet</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -913,7 +913,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: …</em></p>
+<p><em>Takeaway: the kernel density plot reveals a mild skew on final math score for those with internet acess</em></p>
 <p>Create a kernel density plot for Final Portuguese Score (<code>G3_port</code>) across one of the categorical variables, in this case Internet Access (<code>internet</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -932,7 +932,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: …</em></p>
+<p><em>Takeaway: the kernel density plot shows only a very minor difference in final Portuguese score based upon internet access</em></p>
 <p>Create a box plot for Final Math Score (<code>G3_math</code>) across one of the categorical variables, in this case Internet Access (<code>internet</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -953,7 +953,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: …</em></p>
+<p><em>Takeaway: the box plot reveals a slightly higher mean and IQR on final math score for those with internet acess</em></p>
 <p>Create a box plot for Final Portuguese Score (<code>G3_port</code>) across one of the categorical variables, in this case Internet Access (<code>internet</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -974,7 +974,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: …</em></p>
+<p><em>Takeaway: the box plot shows only a very minor difference in mean and IQR for final Portuguese score based upon internet access</em></p>
 <p>Create a scatterplot relating a <code>G3</code> variable, in this case <code>G3_math</code> to other numeric variables, in this case <code>G1_math</code>. Color the points by a categorical variable, in this case <code>path_math</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -998,7 +998,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: first period and final period math scores appear fairly correlated; these is no obvious clustering for students with extra paid math classes</em></p>
+<p><em>Takeaway: first period and final period math scores appear fairly highly correlated; there is no obvious clustering for students with extra paid math classes.</em></p>
 <p>Create a scatterplot relating a <code>G3</code> variable, in this case <code>G3_math</code> to other numeric variables, in this case <code>G3_port</code>. Color the points by a categorical variable, in this case <code>schoolsup</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -1022,7 +1022,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: …</em></p>
+<p><em>Takeaway: extra educational support does not seem to materially influence the relationship between final math and Portuguese grade</em></p>
 <p>Repeat the scatter plot step but use faceting to obtain graphs at each setting of another categorical variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a>study_time <span class="ot">&lt;-</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"1"</span> <span class="ot">=</span> <span class="st">"&lt;2 hrs"</span>, <span class="st">"2"</span> <span class="ot">=</span> <span class="st">"2-5 hrs"</span>, <span class="st">"3"</span> <span class="ot">=</span> <span class="st">"5-10 hrs"</span>, <span class="st">"4"</span> <span class="ot">=</span> <span class="st">"&gt;10 hrs"</span>))</span>
@@ -1066,7 +1066,7 @@ G3_port          0.48    1.00</code></pre>
 </div>
 </div>
 </div>
-<p><em>Takeaway: final math and Portuguese scores appear correlated with medium strength across all facet levels; those with over 10 study hours appear to be more tightly packed toward the upper right</em></p>
+<p><em>Takeaway: final math and Portuguese scores appear correlated with medium strength across all facet levels; however, those with over 10 study hours appear to be more tightly packed toward the upper right</em></p>
 <p>Repeat the scatter plot step but use faceting to obtain graphs at each combination of two categorical variables.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -1097,7 +1097,7 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Portuguese Grade"</span>) <span class="sc">+</span></span>
 <span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Final Math Grade"</span>) <span class="sc">+</span></span>
 <span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Final Portuguese and Math Grades"</span>,</span>
-<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Extra Educational Support,</span><span class="sc">\n</span><span class="st">Romantic Relationships,and Extracurricular Activities"</span>,</span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Extra Educational Support,</span><span class="sc">\n</span><span class="st">Romantic Relationships, and Extracurricular Activities"</span>,</span>
 <span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Extra</span><span class="sc">\n</span><span class="st">Educational</span><span class="sc">\n</span><span class="st">Support"</span>) <span class="sc">+</span></span>
 <span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(romantic <span class="sc">~</span> activities, <span class="at">labeller =</span> label_context)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
