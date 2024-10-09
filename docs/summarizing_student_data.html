@@ -553,7 +553,7 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 </div>
 </div>
 <p><em>Takeaway: across the students’ data set it looks like if the mother is employed in health or teaching, it is more likely she has earned higher education.</em></p>
-<p>Three-way contigency table on guardian, family size and family support:</p>
+<p>Three-way contingency table on guardian, family size and family support:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>three_way <span class="ot">&lt;-</span> <span class="fu">table</span>(students<span class="sc">$</span>guardian, students<span class="sc">$</span>famsize, students<span class="sc">$</span>famsup)</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>three_way</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -576,7 +576,7 @@ dbl (16): age, Medu, Fedu, traveltime, studytime, failures, famrel, freetime...
 </div>
 </div>
 <p><em>Takeaway: for students where the father is the primary guardian, the presence of family education support seems proportionally greater for larger family sizes.</em></p>
-<p>Conditional three-way contigency table on sex and school for only rural addresses:</p>
+<p>Conditional three-way contingency table on sex and school for only rural addresses:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>three_way_cond <span class="ot">&lt;-</span> <span class="fu">table</span>(students<span class="sc">$</span>sex, students<span class="sc">$</span>school, students<span class="sc">$</span>address)</span>
 <span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>three_way_cond[, , <span class="st">"R"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -763,7 +763,7 @@ stdev_G3_port         3.15
 IQR_G3_port           3.00</code></pre>
 </div>
 </div>
-<p><em>Takeaway: there looks to be less variability in adsences for math compared to the full sample; average G3 scores are somewhat lower for both math and Portuguese compared to the full sample.</em></p>
+<p><em>Takeaway: there looks to be less variability in absences for math compared to the full sample; average G3 scores are somewhat lower for both math and Portuguese compared to the full sample.</em></p>
 <p>Find measures of center and spread for the numeric variables <code>G1</code> and <code>G3</code> for both math and Portuguese across a single grouping variable, in this case whether the student had <strong>extra educational support</strong> from the school.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -797,7 +797,7 @@ Supply arguments directly to `.fns` through an anonymous function instead.
 #   median_G3_port &lt;dbl&gt;, stdev_G3_port &lt;dbl&gt;, IQR_G3_port &lt;dbl&gt;</code></pre>
 </div>
 </div>
-<p><em>Takeaway: students with extra educational support showed a modest increase from G1 scores to G3 scores; the same was true for Portuguese, although the students wihtout extra support also raised their scores.</em></p>
+<p><em>Takeaway: students with extra educational support showed a modest increase from G1 scores to G3 scores; the same was true for Portuguese, although the students without extra support also raised their scores.</em></p>
 <p>Find measures of center and spread for the numeric variables <code>G1</code> and <code>G3</code> for both math and Portuguese across two grouping variable, in this case whether the student had <strong>extra paid classes</strong> in either or both subjects.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>students <span class="sc">|&gt;</span></span>
@@ -865,7 +865,7 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Math Score"</span>) <span class="sc">+</span></span>
 <span id="cb72-5"><a href="#cb72-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Count"</span>) <span class="sc">+</span></span>
 <span id="cb72-6"><a href="#cb72-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Final Math Score Distribution"</span>,</span>
-<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Internet Access"</span>, <span class="at">fill =</span> <span class="st">"Internet </span><span class="sc">\n</span><span class="st">Access"</span>) <span class="sc">+</span></span>
+<span id="cb72-7"><a href="#cb72-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Internet Access"</span>, <span class="at">fill =</span> <span class="st">"Internet</span><span class="sc">\n</span><span class="st">Access"</span>) <span class="sc">+</span></span>
 <span id="cb72-8"><a href="#cb72-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Paired"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -884,7 +884,7 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Portuguese Score"</span>) <span class="sc">+</span></span>
 <span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Count"</span>) <span class="sc">+</span></span>
 <span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Final Portuguese Score Distribution"</span>,</span>
-<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Internet Access"</span>, <span class="at">fill =</span> <span class="st">"Internet </span><span class="sc">\n</span><span class="st">Access"</span>) <span class="sc">+</span></span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Internet Access"</span>, <span class="at">fill =</span> <span class="st">"Internet</span><span class="sc">\n</span><span class="st">Access"</span>) <span class="sc">+</span></span>
 <span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Paired"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -903,7 +903,7 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb74-4"><a href="#cb74-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Math Score"</span>) <span class="sc">+</span></span>
 <span id="cb74-5"><a href="#cb74-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Count"</span>) <span class="sc">+</span></span>
 <span id="cb74-6"><a href="#cb74-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Final Math Score Distribution"</span>,</span>
-<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Internet Access"</span>, <span class="at">fill =</span> <span class="st">"Internet </span><span class="sc">\n</span><span class="st">Access"</span>) <span class="sc">+</span></span>
+<span id="cb74-7"><a href="#cb74-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Internet Access"</span>, <span class="at">fill =</span> <span class="st">"Internet</span><span class="sc">\n</span><span class="st">Access"</span>) <span class="sc">+</span></span>
 <span id="cb74-8"><a href="#cb74-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Paired"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -922,7 +922,7 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Portuguese Score"</span>) <span class="sc">+</span></span>
 <span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Count"</span>) <span class="sc">+</span></span>
 <span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Final Portuguese Score Distribution"</span>,</span>
-<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Internet Access"</span>, <span class="at">fill =</span> <span class="st">"Internet </span><span class="sc">\n</span><span class="st">Access"</span>) <span class="sc">+</span></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Internet Access"</span>, <span class="at">fill =</span> <span class="st">"Internet</span><span class="sc">\n</span><span class="st">Access"</span>) <span class="sc">+</span></span>
 <span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette=</span><span class="st">"Paired"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
@@ -986,7 +986,7 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Final Math Grade"</span>) <span class="sc">+</span></span>
 <span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between First Period Math Grade and Final Grade"</span>,</span>
 <span id="cb78-9"><a href="#cb78-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Paid Extra Classes"</span>,</span>
-<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Extra Paid </span><span class="sc">\n</span><span class="st">Classes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb78-10"><a href="#cb78-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Extra Paid</span><span class="sc">\n</span><span class="st">Classes"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -1009,7 +1009,8 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb80-6"><a href="#cb80-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Portuguese Grade"</span>) <span class="sc">+</span></span>
 <span id="cb80-7"><a href="#cb80-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Final Math Grade"</span>) <span class="sc">+</span></span>
 <span id="cb80-8"><a href="#cb80-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Final Portuguese and Math Grades"</span>,</span>
-<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Extra Educational Support"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb80-9"><a href="#cb80-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Extra Educational Support"</span>,</span>
+<span id="cb80-10"><a href="#cb80-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Extra</span><span class="sc">\n</span><span class="st">Educational</span><span class="sc">\n</span><span class="st">Support"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`geom_smooth()` using formula = 'y ~ x'</code></pre>
 </div>
@@ -1033,8 +1034,9 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"First Period Math Grade"</span>) <span class="sc">+</span></span>
 <span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Final Math Grade"</span>) <span class="sc">+</span></span>
 <span id="cb82-9"><a href="#cb82-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between First Period Math Grade and Final Grade"</span>,</span>
-<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Paid Extra Classes and Study Time"</span>) <span class="sc">+</span></span>
-<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> studytime, <span class="at">labeller =</span> study_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb82-10"><a href="#cb82-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Paid Extra Classes and Study Time"</span>,</span>
+<span id="cb82-11"><a href="#cb82-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Extra Paid</span><span class="sc">\n</span><span class="st">Classes"</span>) <span class="sc">+</span></span>
+<span id="cb82-12"><a href="#cb82-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> studytime, <span class="at">labeller =</span> study_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1053,8 +1055,9 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Portuguese Grade"</span>) <span class="sc">+</span></span>
 <span id="cb83-6"><a href="#cb83-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Final Math Grade"</span>) <span class="sc">+</span></span>
 <span id="cb83-7"><a href="#cb83-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Final Portuguese and Math Grades"</span>,</span>
-<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Extra Educational Support and Study Time"</span>) <span class="sc">+</span></span>
-<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> studytime, <span class="at">labeller =</span> study_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb83-8"><a href="#cb83-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Extra Educational Support and Study Time"</span>,</span>
+<span id="cb83-9"><a href="#cb83-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Extra</span><span class="sc">\n</span><span class="st">Educational</span><span class="sc">\n</span><span class="st">Support"</span>) <span class="sc">+</span></span>
+<span id="cb83-10"><a href="#cb83-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> studytime, <span class="at">labeller =</span> study_time)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1073,8 +1076,9 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb84-5"><a href="#cb84-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"First Period Math Grade"</span>) <span class="sc">+</span></span>
 <span id="cb84-6"><a href="#cb84-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Final Math Grade"</span>) <span class="sc">+</span></span>
 <span id="cb84-7"><a href="#cb84-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between First Period Math Grade and Final Grade"</span>,</span>
-<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Paid Extra Classes and Studytime"</span>) <span class="sc">+</span></span>
-<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(romantic <span class="sc">~</span> activities, <span class="at">labeller =</span> label_context)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb84-8"><a href="#cb84-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Paid Extra Classes, Romantic Relationships,</span><span class="sc">\n</span><span class="st">and Extracurricular Activities"</span>,</span>
+<span id="cb84-9"><a href="#cb84-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Extra Paid</span><span class="sc">\n</span><span class="st">Classes"</span>) <span class="sc">+</span></span>
+<span id="cb84-10"><a href="#cb84-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(romantic <span class="sc">~</span> activities, <span class="at">labeller =</span> label_context)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -1090,7 +1094,12 @@ G3_port          0.48    1.00</code></pre>
 <span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(G3_port, G3_math, <span class="at">color =</span> schoolsup)) <span class="sc">+</span></span>
 <span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
 <span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Set1"</span>) <span class="sc">+</span></span>
-<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(romantic <span class="sc">~</span> activities, <span class="at">labeller =</span> label_context)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">xlab</span>(<span class="st">"Final Portuguese Grade"</span>) <span class="sc">+</span></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">"Final Math Grade"</span>) <span class="sc">+</span></span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relationship between Final Portuguese and Math Grades"</span>,</span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Considering Effects of Extra Educational Support,</span><span class="sc">\n</span><span class="st">Romantic Relationships,and Extracurricular Activities"</span>,</span>
+<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Extra</span><span class="sc">\n</span><span class="st">Educational</span><span class="sc">\n</span><span class="st">Support"</span>) <span class="sc">+</span></span>
+<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(romantic <span class="sc">~</span> activities, <span class="at">labeller =</span> label_context)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
